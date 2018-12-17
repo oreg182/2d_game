@@ -1,0 +1,27 @@
+[
+  {
+    "BUILD_MAP_FROM_CENTER_TOP": 19,
+    "BUILD_MAP_FROM_CENTER_BOTTOM": 19,
+    "BUILD_MAP_FROM_CENTER_LEFT": 20,
+    "BUILD_MAP_FROM_CENTER_RIGHT": 20,
+
+    "GENERATE_RANDOM_MAP_SIZE_X": 50,
+    "GENERATE_RANDOM_MAP_SIZE_Y": 50,
+    "TEST_CENTER_OF_MAP": [19, 18],
+
+    "BACKGROUND_COLOR": {
+      "desert": "#ffff00",
+      "wood": "#008000"
+    },
+    "BUILDING_IMAGES": {
+      "DEFAULT": "0.png",
+      "Bunker": "bunker.png"},
+    "UNIT_IMAGES": {
+      "DEFAULT": "0",
+      "__UNIT_CLASS__": "1",
+      "__INFANTERIE_CLASS__": "20",
+      "__ARTILLERIE_CLASS__": "50",
+      "__PANZER_CLASS__": "100"
+    }
+  }
+]
