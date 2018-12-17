@@ -4,7 +4,8 @@ from _gui import Mybutton
 from config import get_confi
 from constants import *
 from einheiten import _Unit  # nur zu testzwecken
-from PIL import ImageTk, Image
+from gebaeude import Gebaeude, Headquarter
+from PIL import ImageTk, Image, ImageDraw
 import logging as log
 import datetime
 from sys import path
@@ -20,12 +21,22 @@ log.basicConfig(filename=LOGPATH + '/' + timestr + '.log', level=log.DEBUG)
 log.info("=======================STARTED=NEW=MAIN=====================")
 
 
+class Profile:
+    def __init__(self):
+        self.name = DEFAULT
+        self.id = 0
+
+
+PLAYER = Profile()
+
+
 class Chunk:
     def __init__(self, x, y):
         self.x_coord = x
         self.y_coord = y
         self.ground = DEFAULT
-        self.building = DEFAULT
+        testhq = Headquarter()
+        self.building = testhq
         self.units_inside = []
         self.image = DEFAULT
 
@@ -57,7 +68,15 @@ class Chunk:
     def set_image(self):
         backgroundcolors = get_confi("BACKGROUND_COLOR")
         backgroundcolor = backgroundcolors[self.ground]
-        bgimage = Image.new('RGB', (180, 130), backgroundcolor)
+        bgimage = Image.new('RGB', (22, 14), backgroundcolor)
+        draw = ImageDraw.Draw(bgimage)
+        if isinstance(self.building, Gebaeude):
+            if self.building.owner == PLAYER.id:
+                c = 'lightgreen'
+            else:
+                c = 'red'
+            draw.ellipse((7, 5, 11, 9), c)  # x-r y-r x+r y+r
+
         log.debug('created image')
         self.image = bgimage
 
