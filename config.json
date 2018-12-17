@@ -12,16 +12,6 @@
     "BACKGROUND_COLOR": {
       "desert": "#ffff00",
       "wood": "#008000"
-    },
-    "BUILDING_IMAGES": {
-      "DEFAULT": "0.png",
-      "Bunker": "bunker.png"},
-    "UNIT_IMAGES": {
-      "DEFAULT": "0",
-      "__UNIT_CLASS__": "1",
-      "__INFANTERIE_CLASS__": "20",
-      "__ARTILLERIE_CLASS__": "50",
-      "__PANZER_CLASS__": "100"
     }
   }
 ]

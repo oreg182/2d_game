@@ -3,7 +3,7 @@ import random
 from _gui import Mybutton
 from config import get_confi
 from constants import *
-from einheiten import _Unit
+from einheiten import _Unit  # nur zu testzwecken
 from PIL import ImageTk, Image
 import logging as log
 import datetime
@@ -59,8 +59,6 @@ class Chunk:
         backgroundcolor = backgroundcolors[self.ground]
         bgimage = Image.new('RGB', (180, 130), backgroundcolor)
         log.debug('created image')
-        buildingsdict = get_confi("BUILDING_IMAGES")
-        units = get_confi("UNIT_IMAGES")
         self.image = bgimage
 
 
@@ -109,7 +107,6 @@ class App:
         self.__load_chunks(center)
         self.displayed_labels = list()
         for chunk in self.loaded_chunks:
-            colors = {'wood': 'green', 'desert': 'yellow'}
             self.images.append(ImageTk.PhotoImage(chunk.image))
             self.displayed_labels.append(
                 Mybutton(idnr, (chunk.x_coord, chunk.y_coord), self.playgroundframe, image=self.images[-1],
