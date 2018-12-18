@@ -35,8 +35,7 @@ class Chunk:
         self.x_coord = x
         self.y_coord = y
         self.ground = DEFAULT
-        testhq = Headquarter()
-        self.building = testhq
+        self.building = DEFAULT
         self.units_inside = []
         self.image = DEFAULT
 
@@ -50,6 +49,9 @@ class Chunk:
     def generate_random(self):
         """gesamten chunk random generieren"""
         self.ground = random.choice(['wood', 'desert'])
+        if not random.randint(0, 6):
+            self.building = Headquarter()
+            self.building.owner = random.randint(0, 1)
 
     def move_into(self, unit):
         """
@@ -93,6 +95,8 @@ class Playground:
                 row.append(Chunk(x, y))
             self.allchunks.append(row)
 
+    def save_playground(self):
+        pass
 
 PLAYGROUND = Playground()
 
