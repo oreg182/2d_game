@@ -1,5 +1,4 @@
-from constants import *
-
+DEFAULT = 'DEFAULT'
 
 class _Unit:
     """Base class for all units"""

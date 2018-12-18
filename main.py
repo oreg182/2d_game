@@ -2,7 +2,6 @@ from tkinter import *
 import random
 from _gui import Mybutton
 from config import get_confi
-from constants import *
 from einheiten import _Unit  # nur zu testzwecken
 from gebaeude import Gebaeude, Headquarter
 from PIL import ImageTk, Image, ImageDraw
@@ -12,6 +11,7 @@ from sys import path
 
 PATH = path[0]
 LOGPATH = PATH + '/logs'
+DEFAULT = "DEFAULT"
 
 timestr = datetime.datetime.now().strftime('%d-%m-%y_%H-%M-%S')
 f = open(LOGPATH + '/' + timestr + '.log', 'w')
