@@ -12,6 +12,10 @@
     "BACKGROUND_COLOR": {
       "desert": "#ffff00",
       "wood": "#008000"
-    }
+    },
+
+    "SERVER_IP": "127.0.0.1",
+    "SERVERPORT": "4173"
+
   }
 ]

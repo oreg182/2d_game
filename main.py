@@ -8,7 +8,7 @@ from PIL import ImageTk, Image, ImageDraw
 import logging as log
 import datetime
 from sys import path
-
+import socket as so
 PATH = path[0]
 LOGPATH = PATH + '/logs'
 DEFAULT = "DEFAULT"
@@ -95,8 +95,12 @@ class Playground:
                 row.append(Chunk(x, y))
             self.allchunks.append(row)
 
-    def save_playground(self):
-        pass
+    def get_playground_from_server(self):
+        ipaddress = get_confi('SERVER_IP')
+        port = get_confi('SERVER_PORT')
+        sock1 = so.socket(so.AF_INET, so.SOCK_STREAM)
+        sock1.bind((ipaddress, int(port)))
+
 
 PLAYGROUND = Playground()
 
