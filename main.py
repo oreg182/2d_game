@@ -8,13 +8,14 @@ from PIL import ImageTk, Image, ImageDraw
 import logging as log
 import datetime
 from sys import path
+from _tkinter import TclError
 
 PATH = path[0]
 LOGPATH = PATH + '/logs'
 DEFAULT = "DEFAULT"
 
 timestr = datetime.datetime.now().strftime('%d-%m-%y_%H-%M-%S')
-f = open(LOGPATH + '/' + timestr + '.log', 'w')
+f = open(LOGPATH + '/' + timestr + '.log', 'w')  # create log folder manually if err
 f.close()
 log.basicConfig(filename=LOGPATH + '/' + timestr + '.log', level=log.DEBUG)
 
@@ -98,32 +99,32 @@ class Playground:
     def save_playground(self):
         pass
 
+
 PLAYGROUND = Playground()
 
 
 class App:
     def __init__(self):
         self.root = Tk()
-        self.root.state('zoomed')
+        try:
+            self.root.state('zoomed')
+        except TclError:
+            pass
+
         self.images = list()
         self.playgroundframe = Frame(self.root)
-        self.playgroundframe.pack(side=LEFT)
+        self.playgroundframe.grid(row=0, column=0)
         self.infoframe = Frame(self.root)
-        self.infoframe.pack(side=RIGHT)
+        self.infoframe.grid(row=0, column=1)
+        self.menuframe = Frame()
+        self.menuframe.grid(row=1, column=0)
         self.infoframeobj = list()
         self.loaded_chunks = list()
         self.displayed_labels = list()
+        self.menupunkte = list()
         self.build_playground()
+        self.build_menu()
         self.root.mainloop()
-
-    def build_infoscreen(self, chunk: Chunk):
-        for obj in self.infoframeobj:
-            obj.pack_forget()
-        coords = chunk.x_coord, chunk.y_coord
-        coordslbl = Label(self.infoframe, text=str(coords) + '\n' + str(chunk.ground) + '\n'
-                                               + 'Building: ' + str(chunk.building) + '\n' + str(chunk.units_inside))
-        coordslbl.pack(side=TOP)
-        self.infoframeobj.append(coordslbl)
 
     def build_playground(self, center=get_confi("TEST_CENTER_OF_MAP")):
         idnr = 0
@@ -146,6 +147,19 @@ class App:
                     if centerchunkcoord[1] - get_confi("BUILD_MAP_FROM_CENTER_BOTTOM") < y < centerchunkcoord[1] \
                             + get_confi("BUILD_MAP_FROM_CENTER_TOP"):
                         self.loaded_chunks.append(chunk)
+
+    def build_infoscreen(self, chunk: Chunk):
+        for obj in self.infoframeobj:
+            obj.pack_forget()
+        coords = chunk.x_coord, chunk.y_coord
+        coordslbl = Label(self.infoframe, text=str(coords) + '\n' + str(chunk.ground) + '\n'
+                                               + 'Building: ' + str(chunk.building) + '\n' + str(chunk.units_inside))
+        coordslbl.pack(side=TOP)
+        self.infoframeobj.append(coordslbl)
+
+    def build_menu(self):
+        self.menupunkte.append(Label(self.menuframe, text='test'))
+        self.menupunkte[-1].pack()
 
 
 if __name__ == '__main__':
