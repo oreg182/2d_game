@@ -19,8 +19,7 @@
     "DEFAULT_USERNAME": "GERO",
     "DEFAULT_USERID": "9402",
     "STANDART_SAVE_FILE": "save.txt",
-    "LOGINFILE": "logindata.json"
-    },
+    "LOGINFILE": "logindata.json",
 
     "SERVER_IP": "127.0.0.1",
     "SERVERPORT": "4173",
