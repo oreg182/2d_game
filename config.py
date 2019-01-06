@@ -17,6 +17,3 @@ config = _Config()
 
 def get_confi(setting):
     return config.confi[setting]
-
-if __name__ == '__main__':
-    print(get_confi("BUILDINGS_IMAGE_ID"))

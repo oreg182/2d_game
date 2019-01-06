@@ -1,7 +1,11 @@
+DEFAULT = 'DEFAULT'
+
+
 class Gebaeude:
-    def __init__(self):
-        self.owner = 1  # id des spielers
+    def __init__(self, owner):
+        self.owner = owner
 
 
 class Headquarter(Gebaeude):
-    pass
+    def __init__(self, owner):
+        super().__init__(owner)
