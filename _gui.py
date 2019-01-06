@@ -2,7 +2,7 @@ from tkinter import *
 
 
 class Mybutton(Widget):
-    def __init__(self, idnr, coord:tuple, master, cnf=None, **kw):
+    def __init__(self, idnr, coord: tuple, master, cnf=None, **kw):
         if cnf is None:
             cnf = {}
         self.idnr = idnr
