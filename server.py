@@ -11,9 +11,9 @@ LOGPATH = PATH + '/serverlogs'
 RESPONSEPORT = int(get_confi("RESPONSEPORT"))
 
 timestr = datetime.datetime.now().strftime('%d-%m-%y_%H-%M-%S')
-f = open(LOGPATH + '/' + timestr + '.log', 'w')
+f = open(LOGPATH + '/server' + timestr + '.log', 'w')
 f.close()
-log.basicConfig(filename=LOGPATH + '/' + timestr + '.log', level=log.DEBUG)
+log.basicConfig(filename=LOGPATH + '/server' + timestr + '.log', level=log.DEBUG)
 
 
 class Commands:
@@ -30,7 +30,7 @@ class RecvConnection(Thread):
         sock1 = so.socket()
         sock1.bind(('', 1337))
         while main_thread().is_alive():
-            sock1.listen()
+            sock1.listen(5)
             conn, addr = sock1.accept()
             thread = HandleConnection(conn, addr)
             thread.start()

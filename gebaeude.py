@@ -9,3 +9,8 @@ class Gebaeude:
 class Headquarter(Gebaeude):
     def __init__(self, owner):
         super().__init__(owner)
+
+
+class Bunker(Gebaeude):
+    def __init__(self, owner):
+        super().__init__(owner)

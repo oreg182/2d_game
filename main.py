@@ -9,7 +9,6 @@ import logging as log
 import datetime
 from sys import path
 from _tkinter import TclError
-import hashlib
 import json
 
 PATH = path[0]
@@ -31,16 +30,15 @@ class Profile:
 
     @staticmethod
     def check_login(e1, e2, file=get_confi("LOGINFILE")):
-        with open(file) as f:
-            d = json.load(f)[0]
+        with open(file) as f1:
+            d = json.load(f1)[0]
         try:
-            if d[e1] == e2:
+            if d[e1] == e2:  # TODO hash + server check
                 return False
             else:
                 return 'Falsches Passwort'
         except KeyError:
             return 'Falscher Nutzername'
-
 
 
 PLAYER = Profile(get_confi("DEFAULT_USERID"), get_confi("DEFAULT_USERNAME"))
@@ -117,9 +115,12 @@ class Chunk:
 
 
 class Playground:
-    def __init__(self):
+    def __init__(self, source='NEW'):
         self.allchunks = list()
-        self.generate_random_chunks()
+        if source == 'NEW':
+            self.generate_random_chunks()
+        elif source == 'SERVER':
+            self.load_playground()
 
     def generate_random_chunks(self):
         idnr = 0
@@ -131,6 +132,9 @@ class Playground:
             self.allchunks.append(row)
 
     def save_playground(self, file=get_confi("STANDART_SAVE_FILE")):
+        pass
+
+    def load_playground(self):
         pass
 
 
@@ -181,7 +185,6 @@ class App:
             self.build_playground()
             self.build_menu()
 
-
     def build_playground(self, center=get_confi("TEST_CENTER_OF_MAP")):
         self.__load_chunks(center)
         self.displayed_labels = list()
@@ -191,6 +194,9 @@ class App:
                 Mybutton(chunk.idnr, (chunk.x_coord, chunk.y_coord), self.playgroundframe, image=self.images[-1],
                          border=1, height=10, width=20, command=lambda c=chunk: self.build_infoscreen(c)))
             self.displayed_labels[-1].grid(row=chunk.x_coord, column=chunk.y_coord)
+
+    def update_playground(self):
+        pass
 
     def __load_chunks(self, centerchunkcoord: tuple):
         for x, row in enumerate(self.playground.allchunks):
@@ -211,9 +217,10 @@ class App:
                                                + 'Building: ' + str(chunk.get_building()) + '\n' + str(
             chunk.units_inside))
         coordslbl.pack(side=TOP)
-        buildbutton = Button(self.infoframe, text='BUILD',
-                             command=lambda c=chunk: self.build_building_in_chunk(Headquarter(PLAYER), c))
-        buildbutton.pack()
+        if chunk.get_building() == DEFAULT:
+            buildbutton = Button(self.infoframe, text='BUILD',
+                                 command=lambda c=chunk: self.build_building_in_chunk(Headquarter(PLAYER), c))
+            buildbutton.pack()
         self.infoframeobj.append(coordslbl)
 
     def build_menu(self):
@@ -235,4 +242,4 @@ class App:
 
 
 if __name__ == '__main__':
-    a = App()
+    App()
