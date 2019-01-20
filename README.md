@@ -1,5 +1,6 @@
 # 2d_game
 
 einige dateien müssen manuell erstell werden:
-logindaten json
-logs ordner
+logindaten - json;
+logs - ordner;
+serverlogs - ordner;
