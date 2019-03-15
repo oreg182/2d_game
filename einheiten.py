@@ -1,47 +1,39 @@
 DEFAULT = 'DEFAULT'
 
+
 class _Unit:
     """Base class for all units"""
 
-    def __init__(self):
-        self.sort = "BASIC"
+    def __init__(self, sort):
+        self.sort = sort
+        if sort == 'PANZER':
+            self.__init_panzer(5)
+        self.health = 0
+        self.range = 0
+        self.damage = 0
+        self.max_health = 0
 
-        self.__health = DEFAULT
-        self.__damage = DEFAULT
-        self.__range = DEFAULT
+    def __init_panzer(self, health):
+        self.sort = 'PANZER'
+        self.max_health = 5
+        self.range = 2
+        self.damage = 2
+        self.health = health
 
-#        self.can_fly = False  # optional; nicht berücksichtigen in ersten versionen
-#        self.airfield = 0
-
-#        self.can_swim_short = False
-#        self.can_swim_long = False
-
-    def __str__(self):
-        return "__BASIC_UNIT_CLASS__"
-
-
-class _Infanterie(_Unit):
-    def __init__(self):
-        super().__init__()
-        self.sort = "INFANTERIE"
-
-    def __str__(self):
-        return "__INFANTERIE_CLASS__"
+    def __repr__(self):
+        return self.sort + '=' + str(self.health)
 
 
-class _Artillerie(_Unit):
-    def __init__(self):
-        super().__init__()
-        self.sort = "ARTILLERIE"
+class Unit(_Unit):
 
-    def __str__(self):
-        return "__ARTILLERIE_CLASS__"
+    def __init__(self, sort=DEFAULT, string=DEFAULT):
+        if sort == DEFAULT and string == DEFAULT:
+            raise SyntaxError("Fehler beim erstellen der Unit. Kein Typ oder Str")
 
+        elif sort != DEFAULT:
+            super().__init__(sort)
 
-class _Panzer(_Unit):
-    def __init__(self):
-        super().__init__()
-        self.sort = "PANZER"
-
-    def __str__(self):
-        return "__PANZER_CLASS__"
+        elif string != DEFAULT:
+            unittype = string.split('=')[0]
+            if unittype == 'PANZER':
+                self.__init_panzer(string.split('=')[1])

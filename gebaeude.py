@@ -1,16 +1,7 @@
-DEFAULT = 'DEFAULT'
-
-
 class Gebaeude:
-    def __init__(self, owner):
+    def __init__(self, sort, owner):
         self.owner = owner
+        self.sort = sort
 
-
-class Headquarter(Gebaeude):
-    def __init__(self, owner):
-        super().__init__(owner)
-
-
-class Bunker(Gebaeude):
-    def __init__(self, owner):
-        super().__init__(owner)
+    def __repr__(self):
+        return self.sort + '=' + str(self.owner)

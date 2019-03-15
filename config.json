@@ -5,9 +5,12 @@
     "BUILD_MAP_FROM_CENTER_LEFT": 20,
     "BUILD_MAP_FROM_CENTER_RIGHT": 20,
 
-    "GENERATE_RANDOM_MAP_SIZE_X": 50,
-    "GENERATE_RANDOM_MAP_SIZE_Y": 50,
+    "GENERATE_RANDOM_MAP_SIZE_X": 3,
+    "GENERATE_RANDOM_MAP_SIZE_Y": 3,
     "TEST_CENTER_OF_MAP": [19, 18],
+
+    "MAPSIZE_X": 3,
+    "MAPSIZE_Y": 3,
 
     "BACKGROUND_COLOR": {
       "desert": "#ffff00",
@@ -18,12 +21,12 @@
     "PLAYGROUNDFRAME_COLUMN": 0,
     "DEFAULT_USERNAME": "GERO",
     "DEFAULT_USERID": "9402",
-    "STANDART_SAVE_FILE": "save.txt",
     "LOGINFILE": "logindata.json",
 
     "SERVER_IP": "127.0.0.1",
-    "SERVERPORT": "4173",
-    "RESPONSEPORT": "1967"
+    "SERVERPORT": 4173,
+    "RESPONSEPORT": 1967,
+    "SERVER_SAVE_FILE": "playground.txt"
 
 
   }
