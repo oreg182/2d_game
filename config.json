@@ -20,7 +20,7 @@
     "PLAYGROUNDFRAME_ROW": 0,
     "PLAYGROUNDFRAME_COLUMN": 0,
     "DEFAULT_USERNAME": "GERO",
-    "DEFAULT_USERID": "9402",
+    "DEFAULT_USERID": "0",
     "LOGINFILE": "logindata.json",
 
     "SERVER_IP": "127.0.0.1",

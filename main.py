@@ -2,7 +2,7 @@ from tkinter import *
 import random
 from _gui import Mybutton
 from config import get_confi
-from einheiten import Unit  # nur zu testzwecken
+from einheiten import Unit
 from gebaeude import Gebaeude
 from _connection import connect
 from PIL import Image, ImageDraw, ImageTk
@@ -85,7 +85,6 @@ class Chunk:
         self.x_coord = int(sl[1])
         self.y_coord = int(sl[2])
         self.__ground = sl[3]
-
         if sl[4] != 'DEFAULT':
             self.__building = Gebaeude(sl[4].split('=')[0], sl[4].split('=')[1])
         if sl[5] != 'EMPTY':
@@ -102,7 +101,8 @@ class Chunk:
 
     def update_image(self):
         if isinstance(self.__building, Gebaeude):
-            if self.__building.owner == PLAYER:
+            print('updatet image')
+            if self.__building.owner == str(PLAYER):
                 c = 'lightgreen'
             else:
                 c = 'red'
@@ -113,10 +113,10 @@ class Chunk:
         """
         :return: id x y ground building units
         """
-        units = str()
+        units = ''
         for u in self.units_inside:
             units += str(u)
-        if units == str():
+        if units == '':
             units = "EMPTY"
         # Trennzeichen: # * = /
         return '<<Chunk>> id: ' + str(self.idnr) + ' with coords: (' + str(self.x_coord) + '|' + str(
@@ -124,7 +124,7 @@ class Chunk:
             self.y_coord) + '*' + str(self.get_ground()) + '*' + str(self.get_building()) + '*' + units
 
     def __repr__(self):
-        units = str()
+        units = ''
         for u in self.units_inside:
             units += str(u) + ']'
         units = units[:-1]
@@ -194,7 +194,6 @@ class App:
         self.root.mainloop()
 
     def build_loginscreen(self):
-        global PLAYER
         l1 = Label(self.loginframe, text='Spielername: ')
         l2 = Label(self.loginframe, text='Passwort: ')
         e1 = Entry(self.loginframe)
@@ -235,6 +234,7 @@ class App:
 
     def __load_chunks(self, centerchunkcoord: tuple):
         self.playground = Playground(source="SERVER")
+        print(self.playground)
         for x, row in enumerate(self.playground.allchunks):
             if centerchunkcoord[0] - get_confi("BUILD_MAP_FROM_CENTER_LEFT") < x < centerchunkcoord[0] + get_confi(
                     "BUILD_MAP_FROM_CENTER_RIGHT"):
@@ -250,7 +250,7 @@ class App:
             obj.pack_forget()
         coords = chunk.x_coord, chunk.y_coord
         coordslbl = Label(self.infoframe, text=str(coords) + '\n' + str(chunk.get_ground()) + '\n'
-                                               + 'Building: ' + str(chunk.get_building()) + '\n' + str(
+                          + 'Building: ' + str(chunk.get_building()) + '\n' + str(
             chunk.units_inside))
         coordslbl.pack(side=TOP)
         if chunk.get_building() == DEFAULT:
@@ -264,10 +264,13 @@ class App:
         self.menupunkte.append(Label(self.menuframe, text='Menu').grid(row=0, column=0))
 
     def build_building_in_chunk(self, building, chunk):
-        chunk.set_building(building)
-        self.update_one_chunk(chunk)
-        connect('ACTION', 'BUILD=' + str(building.sort))
-        log.debug('gebaude gebaut bei ' + str(chunk.x_coord) + '|' + str(chunk.y_coord))
+        if connect('ACTION', 'BUILD=' + str(building.sort) + '=' + str(chunk.x_coord) + '=' + str(chunk.y_coord) + '=' + str(PLAYER)) == 'DONE':
+            chunk.set_building(building)
+            print(self.playground)
+            self.update_one_chunk(chunk)
+            log.debug('gebaude gebaut bei ' + str(chunk.x_coord) + '|' + str(chunk.y_coord))
+        else:
+            log.error('Failed to build building in chunk: ERR_FATAL_SERVERMSG')
 
     def update_one_chunk(self, chunk: Chunk):
         for c in self.displayed_labels:

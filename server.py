@@ -21,6 +21,41 @@ f.close()
 logging.basicConfig(filename=LOGPATH + '/server' + timestr + '.log', level=logging.DEBUG)
 
 
+def _manipulate_chunk(xcoord, ycoord, new_text):
+    with open('save.txt') as f:
+        chunks = f.read().split(';')
+        new_str = ''
+        for c in chunks:
+            if c.split('*')[1] == xcoord and c.split('*')[2] == ycoord:
+                new_str += new_text
+            else:
+                new_str += c + '*'
+        new_str = new_str[:-1]
+        f.write(new_str)
+
+
+def manipulate_playground(_type, extra: str):
+    if _type == 'BUILD:':
+        print('in build')
+        building = extra.split('=')[0]
+        xcoord = extra.split('=')[1]
+        ycoord = extra.split('=')[2]
+        profile = extra.split('=')[3]
+        with open('save.txt') as f:
+            chunks = f.read()
+        for c in chunks:
+            new = ''
+            if c.split('*')[1] == xcoord and c.split('*')[2] == ycoord:
+                chunk = c.split('*')
+                new += chunk[0] + '*' + chunk[1] + '*' + chunk[2] + '*' + chunk[3] + '*' + chunk[4] + '*' + building + '=' + profile + '*' + chunk[6]
+                print(new)
+                _manipulate_chunk(xcoord, ycoord, new)
+                break
+
+    elif _type == 'UNIT':
+        pass
+
+
 class Commands:
     @staticmethod
     def playground_send_complete(addr, master):
@@ -33,8 +68,9 @@ class Commands:
         send_back_to_client(addr, '0', master)
 
     @staticmethod
-    def action(addr, master):
-        send_back_to_client(addr)
+    def action(addr, master, extra):
+        manipulate_playground('BUILD', extra)
+        send_back_to_client(addr, 'DONE', master)
 
 
 class RecvConnection(Thread):
@@ -83,6 +119,8 @@ class HandleConnection(Thread):
             Commands.playground_send_complete(self.ipaddr, self.master)
         elif header == 'LOGIN':
             Commands.login(self.ipaddr, self.master)
+        elif header == 'ACTION':
+            Commands.action(self.ipaddr, self.master, msg.split('><')[1])
         self.conn.close()
 
 
@@ -117,5 +155,3 @@ GUI = Gui()
 def log(msg):
     logging.debug(msg)
     GUI.log(msg)
-
-
