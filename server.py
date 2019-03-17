@@ -23,34 +23,38 @@ logging.basicConfig(filename=LOGPATH + '/server' + timestr + '.log', level=loggi
 
 def _manipulate_chunk(xcoord, ycoord, new_text):
     with open('save.txt') as f:
-        chunks = f.read().split(';')
+        _chunks = f.read().split('[')
         new_str = ''
-        for c in chunks:
-            if c.split('*')[1] == xcoord and c.split('*')[2] == ycoord:
-                new_str += new_text
-            else:
-                new_str += c + '*'
+        for chunks in _chunks:
+            for c in chunks.split(';'):
+                if c.split('*')[1] == xcoord and c.split('*')[2] == ycoord:
+                    new_str += new_text
+                else:
+                    new_str += c
+                new_str += ';'
+            print(new_str)
+            new_str = new_str[:-1]
+            new_str += '['
         new_str = new_str[:-1]
+    with open('save.txt', 'w') as f:
         f.write(new_str)
 
 
 def manipulate_playground(_type, extra: str):
-    if _type == 'BUILD:':
-        print('in build')
-        building = extra.split('=')[0]
-        xcoord = extra.split('=')[1]
-        ycoord = extra.split('=')[2]
-        profile = extra.split('=')[3]
+    if _type == 'BUILD':
+        building = extra.split('=')[1]
+        xcoord = extra.split('=')[2]
+        ycoord = extra.split('=')[3]
+        profile = extra.split('=')[4]
         with open('save.txt') as f:
             chunks = f.read()
-        for c in chunks:
-            new = ''
-            if c.split('*')[1] == xcoord and c.split('*')[2] == ycoord:
-                chunk = c.split('*')
-                new += chunk[0] + '*' + chunk[1] + '*' + chunk[2] + '*' + chunk[3] + '*' + chunk[4] + '*' + building + '=' + profile + '*' + chunk[6]
-                print(new)
-                _manipulate_chunk(xcoord, ycoord, new)
-                break
+        for _c in chunks.split('['):
+            for c in _c.split(';'):
+                new = ''
+                if c.split('*')[1] == xcoord and c.split('*')[2] == ycoord:
+                    chunk = c.split('*')
+                    new += chunk[0] + '*' + chunk[1] + '*' + chunk[2] + '*' + chunk[3] + '*' + building + '=' + profile + '*' + chunk[5]
+                    _manipulate_chunk(xcoord, ycoord, new)
 
     elif _type == 'UNIT':
         pass
@@ -69,8 +73,9 @@ class Commands:
 
     @staticmethod
     def action(addr, master, extra):
-        manipulate_playground('BUILD', extra)
-        send_back_to_client(addr, 'DONE', master)
+        if extra.split('=')[0] == 'BUILD':
+            manipulate_playground('BUILD', extra)
+            send_back_to_client(addr, 'DONE', master)
 
 
 class RecvConnection(Thread):
